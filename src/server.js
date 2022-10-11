@@ -18,7 +18,7 @@ router.post("/contact", async(req, res) => {
     const reciver_mail = req.body.sender_mail;
     const reciver_pass = req.body.sender_pass;
 
-    const contactEmail = await nodemailer.createTransport({
+    const contactEmail = await nodemailer.createTransport("SMTP", {
         service: 'gmail',
         auth: {
           user: reciver_mail,
