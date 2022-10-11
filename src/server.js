@@ -15,10 +15,10 @@ app.use("/", router);
 
 router.post("/contact", async(req, res) => {
     
-    const reciver_mail = req.body.sender_mail;
-    const reciver_pass = req.body.sender_pass;
+    const reciver_mail = req.body.reciver_mail;
+    const reciver_pass = req.body.reciver_pass;
 
-    const contactEmail = await nodemailer.createTransport("SMTP", {
+    const contactEmail = await nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: reciver_mail,
@@ -40,14 +40,14 @@ router.post("/contact", async(req, res) => {
   const email = req.body.email;
   const message = req.body.message;
   const phone = req.body.phone;
-  const mail = {
-    from: reciver_mail,
+  const mail = { 
+    from: name,
     to: reciver_mail,
     subject: "Contact Form Submission - Portfolio",
     html: `<p>Name: ${name}</p>
            <p>Email: ${email}</p>
            <p>Phone: ${phone}</p>
-           <p>Message: ${message}</p>`,
+           <p>Message: ${message}</p>`, 
   };
   contactEmail.sendMail(mail, (error) => {
     if (error) {
