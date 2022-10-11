@@ -1,15 +1,15 @@
-import express ,{json} from "express";
+import express ,{json,Router} from "express";
 import cors from "cors";
 
 
 import nodemailer from 'nodemailer';
 
 // server used to send send emails
-const router = express.Router();
 
+const router = express.Router();
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(json());
 app.use("/", router);
 
 
