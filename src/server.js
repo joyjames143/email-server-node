@@ -3,12 +3,15 @@ import cors from "cors";
 
 
 import nodemailer from 'nodemailer';
+const corsOptions = {origin : process.env.URL || "*"}
+ 
 
 // server used to send send emails
 
 const router = express.Router();
 const app = express();
-app.use(cors());
+//middleware 
+app.use(cors(corsOptions)); 
 app.use(json());
 app.use("/", router);
 
