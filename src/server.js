@@ -54,7 +54,9 @@ router.post("/contact", async(req, res) => {
   };
   contactEmail.sendMail(mail, (error) => {
     if (error) {
+      console.log("errormessage ==> ", error.message)
       res.json(error);
+
     } else {
       res.json({ code: 200, status: "Message Sent" });
     }
