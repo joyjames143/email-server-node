@@ -16,6 +16,10 @@ app.use(json());
 app.use("/", router);
 
 
+router.get("/",(req,res)=>{
+  res.send("email-server is now live")
+})
+
 router.post("/contact", async(req, res) => {
     
     const reciver_mail = req.body.reciver_mail;
