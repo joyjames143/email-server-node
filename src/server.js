@@ -55,7 +55,7 @@ router.post("/contact", async(req, res) => {
     html: `<p>Name: ${name}</p>
            <p>Email: ${email}</p>
            <p>Phone: ${phone}</p>
-           <p>Phone: ${topic}</p>
+           <p>topic: ${topic}</p>
            <p>Message: ${message}</p>`, 
   };
   contactEmail.sendMail(mail, (error) => {
