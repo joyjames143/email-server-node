@@ -47,6 +47,7 @@ router.post("/contact", async(req, res) => {
   const email = req.body.email;
   const message = req.body.message;
   const phone = req.body.phone;
+  const topic = req.body.topic;
   const mail = { 
     from: name,
     to: reciver_mail,
@@ -54,6 +55,7 @@ router.post("/contact", async(req, res) => {
     html: `<p>Name: ${name}</p>
            <p>Email: ${email}</p>
            <p>Phone: ${phone}</p>
+           <p>Phone: ${topic}</p>
            <p>Message: ${message}</p>`, 
   };
   contactEmail.sendMail(mail, (error) => {
