@@ -24,6 +24,9 @@ router.post("/contact", async(req, res) => {
     
     const reciver_mail = req.body.reciver_mail;
     const reciver_pass = req.body.reciver_pass;
+ 
+ console.log("eeeeeeeeeeeee",reciver_mail);
+ console.log("ppppppppppppp",reciver_pass);
 
     const contactEmail = await nodemailer.createTransport({
         service: 'gmail',
