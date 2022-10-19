@@ -39,6 +39,7 @@ router.post("/contact", async(req, res) => {
       await contactEmail.verify((error) => {
         if (error) {
           console.log(error);
+          res.json({ code: 400, status: "email config is wrong" });
         } else {
           console.log("Ready to Send");
         }
@@ -64,7 +65,7 @@ router.post("/contact", async(req, res) => {
   contactEmail.sendMail(mail, (error) => {
     if (error) {
       console.log("errormessage ==> ", error.message)
-      res.json(error);
+      res.json({ code: 400, status: "Message is not Sent" });
 
     } else {
       res.json({ code: 200, status: "Message Sent" });
