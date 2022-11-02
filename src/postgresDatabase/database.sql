@@ -1,7 +1,7 @@
 CREATE DATABASE emailserver;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE users(
+CREATE TABLE IF NOT EXISTS users(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE users(
 INSERT INTO emailserver (email,password,servicename) VALUES ('joy@hotmail.com','1234','gmail');
 
 
-CREATE TABLE emailcontent(
+CREATE TABLE IF NOT EXISTS emailcontent(
     id SERIAL PRIMARY KEY,
     uuid uuid,
     firstname TEXT,

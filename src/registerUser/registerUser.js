@@ -42,6 +42,7 @@ router.post("/", async(req,res)=>{
     var output = {};
     var errorOutput = {};
     try {
+        await databasePool.query("CREATE TABLE IF NOT EXISTS users(id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),email TEXT NOT NULL UNIQUE,password TEXT NOT NULL,servicename TEXT NOT NULL,accesstoken TEXT NOT NULL,refreshtoken TEXT NOT NULL);")
         const registerUserInfo = await databasePool.query(insert_users_into_users_table,[emailAddress, encryptedPassword, service,encryptedAccessToken,encryptedRefreshToken]);
         output["id"] = registerUserInfo.rows[0].id
         output["created"] = true
@@ -53,7 +54,7 @@ router.post("/", async(req,res)=>{
     } catch (error) { 
         if (error.code == "23505"){
             errorOutput["error_message"] = error.detail
-        }else{  
+        }else{    
             errorOutput["error_message"] = error.message
         }
         errorOutput["created"] = false
