@@ -7,6 +7,7 @@ import { sendEmail } from "./sendEmail/sendEmail.js";
 import { tokens } from "./tokens/tokens.js";
 import { emailUsingAccess } from "./sendEmail/emailUsingAccess.js"   
 import {databaseQuery} from "./databaseQuery/databaseQuery.js"
+import {recieveRecords} from "./recieveRecords/recieveRecords.js"
 
 const corsOptions = {origin : process.env.URL || "*"}
 const app = express();
@@ -17,10 +18,11 @@ const PORT = process.env.PORT || 5001;
 app.use(cors(corsOptions)); 
 app.use(json());
 app.use("/", router);
-
+ 
 
 //routes
 app.use("/registerUser", registerUser)
+app.use("/recieverecords",recieveRecords)
 app.use("/contact", sendEmail)
 app.use("/tokens",tokens)
 app.use("/sendemail",emailUsingAccess)

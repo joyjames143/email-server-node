@@ -33,9 +33,10 @@ const sendThatEmail = async(req,res,id) => {
     await contactEmail.verify((error) => {
             if (error) {
                 console.log(error);
-                res.json({ code: 400, status: "email config is wrong" });
+                return res.json({ code: 400, status: "email config is wrong" });
             } else {
-                console.log("Ready to Send");
+                // console.log("Ready to Send"); 
+                // ready to send
             }
     });
 
@@ -100,16 +101,10 @@ router.post("/", async(req, res) => {
     const accessToken = req.headers.authorization;
     const encryptedAccessToken = encrypt(accessToken)
     const singleUser = await databasePool.query("select id,email from users where accesstoken = $1;",[encryptedAccessToken]);
-    console.log(singleUser.rows[0])
-    console.log(singleUser.rows[0].id)
     if (singleUser.rowCount == 0 ){
         console.log(singleUser)
         return res.status(400).send('Invalid access token')
-        
     }
-
-
-
 
     jwt.verify(accessToken,accessTokenSecret, async (err, user) => {
         if (user) {
@@ -118,15 +113,9 @@ router.post("/", async(req, res) => {
         } else if (err.message === "jwt expired") {
             return res.json({ success: false, message: "Access token expired" });
         } else {
-            console.log(err);
             return res.status(403).json({ err, message: "User not authenticated" });
         }
     });
-
-
-
-
-    console.log(accessToken)
 
 });
 
