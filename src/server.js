@@ -2,12 +2,15 @@ import express ,{json,Router} from "express";
 import cors from "cors";
 import nodemailer from 'nodemailer';
 //routes imports
-import { registerUser } from "./registerUser/registerUser.js";
+import { registerUser } from "./users/registerUser.js";
 import { sendEmail } from "./sendEmail/sendEmail.js";
 import { tokens } from "./tokens/tokens.js";
 import { emailUsingAccess } from "./sendEmail/emailUsingAccess.js"   
 import {databaseQuery} from "./databaseQuery/databaseQuery.js"
 import {recieveRecords} from "./recieveRecords/recieveRecords.js"
+import {loginUser} from "./users/loginUser.js"
+
+
 
 const corsOptions = {origin : process.env.URL || "*"}
 const app = express();
@@ -21,7 +24,8 @@ app.use("/", router);
  
 
 //routes
-app.use("/registerUser", registerUser)
+app.use("/registeruser", registerUser)
+app.use("/loginuser", loginUser)
 app.use("/recieverecords",recieveRecords)
 app.use("/contact", sendEmail)
 app.use("/tokens",tokens)

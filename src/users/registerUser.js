@@ -42,8 +42,14 @@ router.post("/", async(req,res)=>{
     var output = {};
     var errorOutput = {};
     try {
-        // await databasePool.query("CREATE TABLE IF NOT EXISTS users(id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),email TEXT NOT NULL UNIQUE,password TEXT NOT NULL,servicename TEXT NOT NULL,accesstoken TEXT NOT NULL,refreshtoken TEXT NOT NULL);")
-        // const aa = await databasePool.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";') 
+        
+        const checkquery = await databasePool.query("select email from users where email =$1" ,[emailAddress]);
+        if (checkquery.rowCount > 0){
+            if (checkquery.rows[0].email === emailAddress){
+                throw new Error("email address already exists")
+            }
+        }
+
         const registerUserInfo = await databasePool.query(insert_users_into_users_table,[emailAddress, encryptedPassword, service,encryptedAccessToken,encryptedRefreshToken]);
         output["access_token"] = accessToken
         output["refresh_token"] = refreshToken
