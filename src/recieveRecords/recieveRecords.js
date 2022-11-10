@@ -29,16 +29,16 @@ router.post("/", async(req,res)=>{
             } else {
                 return res.status(403).json({ err, message: "User not authenticated" });
             }
-        });
+        }); 
 
-        const registerUserRecordInfo = await databasePool.query("select firstname,lastname,fullname,senderemail,topic,message,phone  from emailcontent where uuid = $1;",[uu_id]);
-        output["records"] = registerUserRecordInfo.rows[0]
+        const registerUserRecordInfo = await databasePool.query("select id,firstname,lastname,fullname,senderemail,topic,message,phone  from emailcontent where uuid = $1;",[uu_id]);
+        output["records"] = registerUserRecordInfo.rows
         return res.json(output);
     } catch (error) {
         errorOutput["error_message"] = error.message
         return res.json(errorOutput) 
-    }
-})
+    }  
+}) 
  
 
 
