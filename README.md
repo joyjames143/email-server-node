@@ -6,8 +6,8 @@ This service is created so that you can send email to yourself from your code
 
 ## ways to send email by this API
 ```
-  1. With Registration
-  2. Without Registration
+  1. Without Registration
+  2. With Registration
 ```
  
 #### 1. Without Registration
@@ -180,14 +180,15 @@ Example screenshot of how you have to send a request
 ###### Response : 
       {
           "records": {
-              "firstname": "any_firstname",
-              "lastname": " any_lastname",
-              "fullname": "any full name",
-              "senderemail": "any_email@hotmail.comm",
-              "topic": "any topic",
-              "message": "any message",
-              "phone": null
-          },
+            "id": 2,
+            "firstname": "any_firstname",
+            "lastname": " any_lastname",
+            "fullname": "any full name",
+            "senderemail": "any_email@hotmail.comm",
+            "topic": "any topic",
+            "message": "any message",
+            "phone": null
+        },
           .......
       }
 ###### example :
