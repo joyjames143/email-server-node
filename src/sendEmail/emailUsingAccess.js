@@ -9,38 +9,8 @@ import {checkAndCrop} from "../helpers/checkLengthAndCrop.js"
 const router = Router();
 
 
-const sendThatEmail = async(req,res,id) => {
-    const reciver_mail = req.body.reciver_mail;
-    const reciver_pass = req.body.reciver_pass;
+const sendThatEmail = async(req,res,id,encryptedAccessToken) => {
 
-    if(reciver_mail === undefined){
-        return res.json({code: 400, status: "(email) please provide reciver_mail"})
-        
-    }
-
-    if(reciver_pass === undefined){
-        return res.json({code: 400, status: "(password) please provide reciver_pass"})
-    }          
-
-    const contactEmail = await nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: reciver_mail,
-            pass: reciver_pass
-        },
-    });
-  
-    await contactEmail.verify((error) => {
-            if (error) {
-                console.log(error);
-                return res.json({ code: 400, status: "email config is wrong" });
-            } else {
-                // console.log("Ready to Send"); 
-                // ready to send
-            }
-    });
-
-    
     let firstName   = req.body.first_name;
     let lastName    = req.body.last_name;
     let fullName    = req.body.full_name;
@@ -50,13 +20,7 @@ const sendThatEmail = async(req,res,id) => {
     let message     = req.body.message;
     const save      = req.body.save;
 
-    let name = '';
-    if(firstName === undefined){
-        name = fullName
-    }else{
-        name = firstName
-    }
-
+    //before sending save the email to the database
     if(save){
         const p_firstName   = checkAndCrop(firstName  ,32    ,30);
         const p_lastName    = checkAndCrop(lastName   ,32    ,30);
@@ -70,11 +34,47 @@ const sendThatEmail = async(req,res,id) => {
     
     }
 
+    //get email and password from db to send email using access token
+    const email_Password_from_db = await databasePool.query("select email,password from users where accesstoken = $1;",[encryptedAccessToken]);
+    const userEmail = email_Password_from_db.rows[0].email;
+    const encryptedUserPassword = email_Password_from_db.rows[0].password;
+    const userPassword = decrypt(encryptedUserPassword);      
+
+    const contactEmail = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: userEmail,
+            pass: userPassword
+        },
+    });
+  
+    contactEmail.verify((error) => {
+            if (error) {
+                console.log(error);
+                return res.json({ code: 400, status: "email config is wrong" });
+            } else {
+                // console.log("Ready to Send"); 
+                // ready to send
+            }
+    });
+
+    
+   
+
+    let name = '';
+    if(firstName === undefined){
+        name = fullName
+    }else{
+        name = firstName
+    }
+
+    
+
     
 
     const mail = { 
     from: name,  
-    to: reciver_mail,
+    to: userEmail,
     subject: "Contact Form Submission - Portfolio",
     html: `
         <p>first Name: ${firstName}</p>
@@ -109,7 +109,7 @@ router.post("/", async(req, res) => {
     jwt.verify(accessToken,accessTokenSecret, async (err, user) => {
         if (user) {
             req.user = user;
-            sendThatEmail(req,res,singleUser.rows[0].id);
+            sendThatEmail(req,res,singleUser.rows[0].id,encryptedAccessToken);
         } else if (err.message === "jwt expired") {
             return res.json({ success: false, message: "Access token expired" });
         } else {
