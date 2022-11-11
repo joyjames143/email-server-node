@@ -32,7 +32,6 @@ router.delete("/:id", async(req,res)=>{
         errorOutput["deleted"] = false
         return res.json(errorOutput)
     }
-
 })
  
 

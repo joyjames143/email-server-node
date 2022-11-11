@@ -22,6 +22,12 @@ router.put("/", async(req,res)=>{
     const encryptedAccessToken = encrypt(accessToken)
 
     try {
+        //check access token validity
+        const singleUser = await databasePool.query("select id,email from users where accesstoken = $1;",[encryptedAccessToken]);
+        if (singleUser.rowCount == 0 ){
+            return res.status(400).send('Invalid access token')
+        }
+
         const updatedUserPassword = await databasePool.query("UPDATE users SET password = $1 where accesstoken = $2 ",[encryptedPassword,encryptedAccessToken]);
         //--------for dev purpose only ---------for checking if password is updated successfully because it is stored as a encrypted 
         // const retrivedPassword = await databasePool.query("select password from users where accesstoken = $1",[encryptedAccessToken]);
