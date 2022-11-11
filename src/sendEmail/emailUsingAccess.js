@@ -50,15 +50,12 @@ const sendThatEmail = async(req,res,id,encryptedAccessToken) => {
    
     contactEmail.verify((error) => {
             if (error) {
-                console.log(error);
                 return res.json({ code: 400, status: "email config is wrong" });
             } else {
                 // console.log("Ready to Send"); 
                 // ready to send
             }
     });
-
-    
    
 
     let name = '';
@@ -67,10 +64,6 @@ const sendThatEmail = async(req,res,id,encryptedAccessToken) => {
     }else{
         name = firstName
     }
-
-    
-
-    
 
     const mail = { 
     from: name,  
@@ -85,13 +78,13 @@ const sendThatEmail = async(req,res,id,encryptedAccessToken) => {
         <p>topic: ${topic}</p>
         <p>Message: ${message}</p>`, 
     };
+
     contactEmail.sendMail(mail, (error) => {
-    if (error) {
-    console.log("errormessage ==> ", error.message)
-    res.json({ code: 400, status: "Message is not Sent" });
-    } else {
-    res.json({ code: 200, status: "Message Sent" });
-    }
+        if (error) {
+            return res.json({ code: 400, status: "Message is not Sent" });
+        } else {
+            return res.json({ code: 200, status: "Message Sent" });
+        }
     });
 
 }
@@ -102,7 +95,6 @@ router.post("/", async(req, res) => {
     const encryptedAccessToken = encrypt(accessToken)
     const singleUser = await databasePool.query("select id,email from users where accesstoken = $1;",[encryptedAccessToken]);
     if (singleUser.rowCount == 0 ){
-        console.log(singleUser)
         return res.status(400).send('Invalid access token')
     }
 
