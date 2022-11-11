@@ -71,11 +71,21 @@ Example screenshot of how you have to send a request
 
 ### 2. With Registration
 
-    step 1 : resister
-    step 2 : send mail using access token
-    step 3 : if access token expires use refresh token to get new access token
-    step 4 : if refresh token expires login to get new access & refresh token
-    step 5 : view all emails(sent/notsent) stored in the database
+    step 1 (2.1) : resister
+    step 2 (2.2) : send mail using access token
+    step 3 (2.3) : if access token expires use refresh token to get new access token
+    step 4 (2.4) : if refresh token expires login to get new access & refresh token
+    step 5 (2.5) : view all emails(sent/notsent) stored in the database
+
+
+
+    other things you can do.....
+
+    (2.6) : delete single record
+    (2.7) : update user password
+    (2.8) : delete user (if deleted all user info and records will be deleted)
+    
+
 
 #### 2.1 how to register ?
 
@@ -193,3 +203,67 @@ Example screenshot of how you have to send a request
       }
 ###### example :
 ![App Screenshot](https://github.com/joyjames143/email-server-node/blob/main/screenshots/recieve%20records.png?raw=true)
+
+
+#### 2.6 how to delete single record ? 
+###### Request : 
+    EndPoint : https://email-server-node-js.onrender.com/deleterecord/< record id you wann delete>
+
+    headers : 
+
+      | key                          | value                 | 
+      |------------------------------|-----------------------|
+      | Authorization                | < your access_token > |  
+
+###### Response : 
+      {
+          "deleted": true
+      }
+###### example :
+![App Screenshot](https://github.com/joyjames143/email-server-node/blob/main/screenshots/delete%20record.png?raw=true)
+
+#### 2.7 how to update user password ? 
+###### Request : 
+    EndPoint : https://email-server-node-js.onrender.com/updatepassword
+
+    headers : 
+
+      | key                          | value                 | 
+      |------------------------------|-----------------------|
+      | Authorization                | < your access_token > | 
+
+    body : 
+
+          {
+              "password":"your_New_Password"
+          }
+
+###### Response : 
+      {
+          "updated": true
+      }
+###### example :
+![App Screenshot](https://github.com/joyjames143/email-server-node/blob/main/screenshots/update%20password.png?raw=true)
+
+#### 2.8 how to delete user ? 
+###### Request : 
+    EndPoint : https://email-server-node-js.onrender.com/deleteuser
+
+    headers : 
+
+      | key                          | value                 | 
+      |------------------------------|-----------------------|
+      | Authorization                | < your access_token > |  
+
+    body : 
+
+          {
+              "email":"your_email@gmail.com"
+          }
+
+###### Response : 
+      {
+          "deleted": true
+      }
+###### example :
+![App Screenshot](https://github.com/joyjames143/email-server-node/blob/main/screenshots/delete%20user.png?raw=true)
